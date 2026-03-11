@@ -1,0 +1,269 @@
+// Code Retested (for Engineering Team) 13-oct-2025 (For MSL V2 Board)  
+// Tested Code on 12-sep-2025
+#include <FastLED.h>
+#define LED_PIN_RED    0
+#define NUM_LEDS_RED    4 
+#define LED_PIN_GRN    1
+#define NUM_LEDS_GRN    4 
+
+CRGB leds_grn[NUM_LEDS_GRN];
+CRGB leds_red[NUM_LEDS_RED];
+
+// int pulsePin=2;
+// int ledpin = 3;
+int pulseval;
+int dt = 100;
+int dt2 = 200; 
+
+//-------------------------------
+
+volatile uint16_t pulseWidth = 1051;
+volatile uint32_t lastRise = 0;
+
+
+ISR(PCINT0_vect) {
+  if (PINB & (1 << PB2)) {   // rising edge on pin 2 (PB2)
+    lastRise = micros();
+  } else {                   // falling edge
+    pulseWidth = micros() - lastRise;
+  }
+}
+//------------------------------
+
+void setup() {
+
+  //-------------------
+  pinMode(2, INPUT);//pulse pin
+  pinMode(3, OUTPUT);// led pin/ Switching Signal
+  GIMSK |= (1 << PCIE);    // Enable pin change interrupt
+  PCMSK |= (1 << PCINT2);  // Enable interrupt on PB2
+  sei();
+  //----------------
+
+  FastLED.addLeds<WS2812, LED_PIN_GRN, GRB>(leds_grn, NUM_LEDS_GRN);
+  FastLED.addLeds<WS2812, LED_PIN_RED, GRB>(leds_red, NUM_LEDS_RED);
+
+  //---------------- Turn ON from top one by one  
+
+        leds_grn[0] = CRGB(0,255,0); //green
+        leds_grn[1] = CRGB(0,0,0);
+        leds_grn[2] = CRGB(0,0,0);
+        leds_grn[3] = CRGB(0,0,0);
+
+        leds_red[0] = CRGB(255,0,0); //red
+        leds_red[1] = CRGB(0,0,0);
+        leds_red[2] = CRGB(0,0,0);
+        leds_red[3] = CRGB(0,0,0);
+        FastLED.show();
+        delay(dt);
+
+        leds_grn[0] = CRGB(0,0,0); //green
+        leds_grn[1] = CRGB(0,255,0);
+        leds_grn[2] = CRGB(0,0,0);
+        leds_grn[3] = CRGB(0,0,0);
+
+        leds_red[0] = CRGB(0,0,0); //red
+        leds_red[1] = CRGB(255,0,0);
+        leds_red[2] = CRGB(0,0,0);
+        leds_red[3] = CRGB(0,0,0);
+        FastLED.show();
+        delay(dt);
+
+        leds_grn[0] = CRGB(0,0,0); //green
+        leds_grn[1] = CRGB(0,0,0);
+        leds_grn[2] = CRGB(0,255,0);
+        leds_grn[3] = CRGB(0,0,0);
+
+        leds_red[0] = CRGB(0,0,0); //red
+        leds_red[1] = CRGB(0,0,0);
+        leds_red[2] = CRGB(255,0,0);
+        leds_red[3] = CRGB(0,0,0);
+        FastLED.show();
+        delay(dt);
+
+
+        leds_grn[0] = CRGB(0,0,0); //green
+        leds_grn[1] = CRGB(0,0,0);
+        leds_grn[2] = CRGB(0,0,0);
+        leds_grn[3] = CRGB(0,255,0);
+
+        leds_red[0] = CRGB(0,0,0); //red
+        leds_red[1] = CRGB(0,0,0);
+        leds_red[2] = CRGB(0,0,0);
+        leds_red[3] = CRGB(255,0,0);
+        FastLED.show();
+        delay(dt);
+
+//---------------- Turn on from bottom one by one   
+
+        leds_grn[0] = CRGB(0,0,0); //green
+        leds_grn[1] = CRGB(0,0,0);
+        leds_grn[2] = CRGB(0,0,0);
+        leds_grn[3] = CRGB(0,0,0);
+
+        leds_red[0] = CRGB(0,0,0); //red
+        leds_red[1] = CRGB(0,0,0);
+        leds_red[2] = CRGB(0,0,0);
+        leds_red[3] = CRGB(0,0,0);
+        FastLED.show();
+        delay(dt);      
+
+        leds_grn[0] = CRGB(0,0,0); //green
+        leds_grn[1] = CRGB(0,0,0);
+        leds_grn[2] = CRGB(0,0,0);
+        leds_grn[3] = CRGB(0,255,0);
+
+        leds_red[0] = CRGB(0,0,0); //red
+        leds_red[1] = CRGB(0,0,0);
+        leds_red[2] = CRGB(0,0,0);
+        leds_red[3] = CRGB(255,0,0);
+        FastLED.show();
+        delay(dt);
+
+        leds_grn[0] = CRGB(0,0,0); //green
+        leds_grn[1] = CRGB(0,0,0);
+        leds_grn[2] = CRGB(0,255,0);
+        leds_grn[3] = CRGB(0,0,0);
+
+        leds_red[0] = CRGB(0,0,0); //red
+        leds_red[1] = CRGB(0,0,0);
+        leds_red[2] = CRGB(255,0,0);
+        leds_red[3] = CRGB(0,0,0);
+        FastLED.show();
+        delay(dt);
+
+
+        leds_grn[0] = CRGB(0,0,0); //green
+        leds_grn[1] = CRGB(0,255,0);
+        leds_grn[2] = CRGB(0,0,0);
+        leds_grn[3] = CRGB(0,0,0);
+
+        leds_red[0] = CRGB(0,0,0); //red
+        leds_red[1] = CRGB(255,0,0);
+        leds_red[2] = CRGB(0,0,0);
+        leds_red[3] = CRGB(0,0,0);
+        FastLED.show();
+        delay(dt);
+
+        leds_grn[0] = CRGB(0,255,0); //green
+        leds_grn[1] = CRGB(0,0,0);
+        leds_grn[2] = CRGB(0,0,0);
+        leds_grn[3] = CRGB(0,0,0);
+
+        leds_red[0] = CRGB(255,0,0); //red
+        leds_red[1] = CRGB(0,0,0);
+        leds_red[2] = CRGB(0,0,0);
+        leds_red[3] = CRGB(0,0,0);
+        FastLED.show();
+        delay(dt);
+
+//----------- Turn on step by step from top
+
+        leds_grn[0] = CRGB(0,0,0); //green
+        leds_grn[1] = CRGB(0,0,0);
+        leds_grn[2] = CRGB(0,0,0);
+        leds_grn[3] = CRGB(0,0,0);
+
+        leds_red[0] = CRGB(0,0,0); //red
+        leds_red[1] = CRGB(0,0,0);
+        leds_red[2] = CRGB(0,0,0);
+        leds_red[3] = CRGB(0,0,0);
+        FastLED.show();
+        delay(dt2);
+
+
+        leds_grn[0] = CRGB(0,255,0); //green
+        leds_grn[1] = CRGB(0,0,0);
+        leds_grn[2] = CRGB(0,0,0);
+        leds_grn[3] = CRGB(0,0,0);
+
+        leds_red[0] = CRGB(255,0,0); //red
+        leds_red[1] = CRGB(0,0,0);
+        leds_red[2] = CRGB(0,0,0);
+        leds_red[3] = CRGB(0,0,0);
+        FastLED.show();
+        delay(dt2);
+
+        leds_grn[0] = CRGB(0,255,0); //green
+        leds_grn[1] = CRGB(0,255,0);
+        leds_grn[2] = CRGB(0,0,0);
+        leds_grn[3] = CRGB(0,0,0);
+
+        leds_red[0] = CRGB(255,0,0); //red
+        leds_red[1] = CRGB(255,0,0);
+        leds_red[2] = CRGB(0,0,0);
+        leds_red[3] = CRGB(0,0,0);
+        FastLED.show();
+        delay(dt2);
+
+        leds_grn[0] = CRGB(0,255,0); //green
+        leds_grn[1] = CRGB(0,255,0);
+        leds_grn[2] = CRGB(0,255,0);
+        leds_grn[3] = CRGB(0,0,0);
+
+        leds_red[0] = CRGB(255,0,0); //red
+        leds_red[1] = CRGB(255,0,0);
+        leds_red[2] = CRGB(255,0,0);
+        leds_red[3] = CRGB(0,0,0);
+        FastLED.show();
+        delay(dt2);
+
+
+        leds_grn[0] = CRGB(0,255,0); //green
+        leds_grn[1] = CRGB(0,255,0);
+        leds_grn[2] = CRGB(0,255,0);
+        leds_grn[3] = CRGB(0,255,0);
+
+        leds_red[0] = CRGB(255,0,0); //red
+        leds_red[1] = CRGB(255,0,0);
+        leds_red[2] = CRGB(255,0,0);
+        leds_red[3] = CRGB(255,0,0);
+        FastLED.show();
+        delay(dt2);
+}
+
+void loop()
+{
+  uint16_t val = pulseWidth; // copy safely
+  //For t12 Tx = (min = 1051pwm; mid = 1501pwm; max = 1951pwm)
+  //Read Accuracy = 150pwm; 
+  //lower limt = min + Read Accuracy => 1051+150 = 1201
+  //Upper limt = mid - Read Accuracy => 1501-150 = 1351
+  //Safe Control set at = (lower limt + Upperlimt)/2 => (1201+1351)/2 = 1276
+  
+  if (val >= 800 && val <= 1276) // Master Active
+  { 
+        digitalWrite(3, LOW);
+
+        leds_grn[0] = CRGB(0,255,0); //green
+        leds_grn[1] = CRGB(0,255,0);
+        leds_grn[2] = CRGB(0,255,0);
+        leds_grn[3] = CRGB(0,255,0);
+
+        leds_red[0] = CRGB(255,0,0); //red
+        leds_red[1] = CRGB(255,0,0);
+        leds_red[2] = CRGB(255,0,0);
+        leds_red[3] = CRGB(255,0,0);
+           
+        
+  } 
+  else if(val > 1276 && val <= 2200) // Slave Active
+  {
+        digitalWrite(3, HIGH);
+
+        leds_grn[0] = CRGB(0,0,255); //blue
+        leds_grn[1] = CRGB(0,0,255);
+        leds_grn[2] = CRGB(0,0,255);
+        leds_grn[3] = CRGB(0,0,255);
+
+        leds_red[0] = CRGB(255,0,0); //red
+        leds_red[1] = CRGB(255,0,0);
+        leds_red[2] = CRGB(255,0,0);
+        leds_red[3] = CRGB(255,0,0);
+        
+         
+  }
+  FastLED.show();
+}
+
+
